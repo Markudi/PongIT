@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -14,7 +15,7 @@ public class Ball : MonoBehaviour
 
 
     //Ball
-    public float speed = 4f;
+    public float speed = 6f;
     public float speedMultiplier = 1.35f;
     private Vector2 lastVelocity;
     private Rigidbody2D rb;
@@ -87,6 +88,7 @@ public class Ball : MonoBehaviour
             
             //keep track of last hit player for power ups
             lastHitPlayer = col.gameObject;
+            
             // Debug.Log(lastHitPlayer);
             // Debug.Log(lastHitPlayer.GetType());
         }
@@ -103,8 +105,11 @@ public class Ball : MonoBehaviour
             Player1Score++;
 
             Player1ScoreText.text = Player1Score.ToString();
+
+            //Change score text color to green briefly
+            Player1ScoreText.GetComponent<TextMeshProUGUI>().color = new Color32(27, 236, 26, 100);
+            Invoke("ChangeBackToNormalColor", 1f);
             
-            Debug.Log("Player 1 Scored. Player1 currently has " + Player1Score + " Points vs Player2's " + Player2Score + " points");
             
             //Delay of 2 seconds before launch
             Invoke("LaunchLeft", 2);
@@ -117,12 +122,23 @@ public class Ball : MonoBehaviour
             
             Player2ScoreText.text = Player2Score.ToString();
             
-            Debug.Log("Player 2 Scored. Player2 currently has " + Player2Score + " Points vs Player1's " + Player1Score + " points");
+            //Change score text color to green briefly
+            Player2ScoreText.GetComponent<TextMeshProUGUI>().color = new Color32(27, 236, 26, 100);
+            Invoke("ChangeBackToNormalColor", 1f);
+            
+            
             
             //Delay of 2 seconds before launch
             Invoke("LaunchRight", 2);
             
         }
+    }
+
+    private void ChangeBackToNormalColor()
+    {
+        Player1ScoreText.GetComponent<TextMeshProUGUI>().color = new Color32(255, 255, 255, 100);
+        Player2ScoreText.GetComponent<TextMeshProUGUI>().color = new Color32(255, 255, 255, 100);
+        
     }
     
     
@@ -176,9 +192,8 @@ public class Ball : MonoBehaviour
 
             WinnerScreen();
 
-            Debug.Log("Game Over!");
-
-            Debug.Log("Player 1 Wins!");
+            // Debug.Log("Game Over!");
+            // Debug.Log("Player 1 Wins!");
         }
         else if (Player2Score >= scoreToWin)
         {
@@ -194,9 +209,8 @@ public class Ball : MonoBehaviour
 
             WinnerScreen();
 
-            Debug.Log("Game Over!");
-
-            Debug.Log("Player 2 Wins!");
+            // Debug.Log("Game Over!");
+            // Debug.Log("Player 2 Wins!");
         }
     }
     

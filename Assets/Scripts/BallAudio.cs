@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BallAudio : MonoBehaviour
@@ -9,9 +10,10 @@ public class BallAudio : MonoBehaviour
 
 
     public AudioClip ballHit;
+    public AudioClip fasterBall;
 
     private AudioSource audioSource;
-    private Rigidbody2D ball;
+    public Rigidbody2D ball;
 
 
     private void Awake()
@@ -23,14 +25,25 @@ public class BallAudio : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        var vel = ball.velocity.x;
+        float ballSpeed = this.gameObject.GetComponent<Ball>().speed;
+        // Debug.Log(ballSpeed);
 
         if (col.gameObject.name == "Player1" || col.gameObject.name == "Player2")
         {
-            this.audioSource.PlayOneShot(ballHit, 1F);
-            
+
+
+            //If ball is going fast, play woosh sound else play normal pong sound
+            if (ballSpeed >= 10)
+            {
+                this.audioSource.PlayOneShot(fasterBall, 0.5F);
+            }
+            else
+            {
+                this.audioSource.PlayOneShot(ballHit, 1F);
+            }
+
         }
-        
-        
+
+
     }
 }
